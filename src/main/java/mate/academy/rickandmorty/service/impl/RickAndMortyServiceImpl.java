@@ -1,5 +1,7 @@
 package mate.academy.rickandmorty.service.impl;
 
+import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterResponseDto;
 import mate.academy.rickandmorty.entity.Character;
@@ -7,9 +9,6 @@ import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.RickAndMortyRepository;
 import mate.academy.rickandmorty.service.RickAndMortyService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Random;
 
 @RequiredArgsConstructor
 @Service

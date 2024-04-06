@@ -1,8 +1,7 @@
 package mate.academy.rickandmorty.service;
 
-import mate.academy.rickandmorty.dto.internal.CharacterResponseDto;
-
 import java.util.List;
+import mate.academy.rickandmorty.dto.internal.CharacterResponseDto;
 
 public interface RickAndMortyService {
     CharacterResponseDto getRandomCharacter();

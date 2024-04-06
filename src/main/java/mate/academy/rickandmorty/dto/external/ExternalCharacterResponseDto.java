@@ -1,10 +1,9 @@
 package mate.academy.rickandmorty.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import lombok.Data;
 import mate.academy.rickandmorty.entity.Character;
-
-import java.util.List;
 
 @Data
 public class ExternalCharacterResponseDto {
