@@ -1,7 +1,8 @@
 package mate.academy.rickandmorty.config;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.ExternalCharacterResponseDto;
+import mate.academy.rickandmorty.entity.Character;
 import mate.academy.rickandmorty.repository.RickAndMortyRepository;
 import mate.academy.rickandmorty.service.impl.ExternalClient;
 import org.springframework.boot.CommandLineRunner;
@@ -15,7 +16,7 @@ public class InitializationData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        ExternalCharacterResponseDto characters = externalClient.getCharacters();
-        rickAndMortyRepository.saveAll(characters.getCharacters());
+        List<Character> allCharacters = externalClient.getAllCharacters();
+        rickAndMortyRepository.saveAll(allCharacters);
     }
 }
