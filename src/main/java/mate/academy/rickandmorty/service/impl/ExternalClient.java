@@ -11,20 +11,24 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.ExternalCharacterResponseDto;
 import mate.academy.rickandmorty.entity.Character;
+import mate.academy.rickandmorty.exception.CharacterDataRetrievalInterruptedException;
+import mate.academy.rickandmorty.exception.CharacterDataRetrievalIoException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
 public class ExternalClient {
-    private static final String URL = "https://rickandmortyapi.com/api/character";
+    @Value("${rick.and.morty.external.url}")
+    private String url;
+    private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper;
 
     public List<Character> getAllCharacters() {
         List<Character> allCharacters = new ArrayList<>();
-        HttpClient httpClient = HttpClient.newHttpClient();
-        String nextUrl = URL;
+        String nextUrl = url;
 
-        while (nextUrl != null && !nextUrl.isEmpty()) {
+        while (nextUrl != null && !nextUrl.isBlank()) {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()
                     .uri(URI.create(nextUrl))
@@ -39,10 +43,14 @@ public class ExternalClient {
                         ExternalCharacterResponseDto.class
                 );
 
-                allCharacters.addAll(pageData.getCharacters());
+                allCharacters.addAll(pageData.getResults());
                 nextUrl = pageData.getInfo().getNext();
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException("Can't get response from source", e);
+            } catch (IOException e) {
+                throw new CharacterDataRetrievalIoException("Problem with the network or I/O", e);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new CharacterDataRetrievalInterruptedException(
+                        "The request was interrupted", e);
             }
         }
         return allCharacters;
